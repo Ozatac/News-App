@@ -11,7 +11,7 @@ interface IAServices {
 
     @GET(END_POINT)
     fun getAllNews(
-        @Query("q") q: String,
+        @Query("q") q: String? = "Türkiye",
         @Query("page") page: Int = 1,
         @Query("apiKey") apiKey: String = API_KEY
     ): Observable<NewsResponse>

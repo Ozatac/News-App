@@ -13,30 +13,27 @@ import io.reactivex.schedulers.Schedulers
 
 class NewsViewModel : ViewModel() {
 
-    lateinit var newsList: MutableLiveData<NewsResponse>
-    private var composite: CompositeDisposable? = null
+    var newsList: MutableLiveData<NewsResponse> = MutableLiveData()
 
     init {
-        newsList = MutableLiveData()
-        makeApiCall("Türkiye");
+        makeApiCall("Türkiye ");
     }
 
     fun getListObserver(): MutableLiveData<NewsResponse> {
         return newsList
     }
 
-    fun makeApiCall(q: String) {
-        val retrofitInstance = RetrofitInstance.getRetrofit().create(IAServices::class.java)
-        retrofitInstance.getAllNews(q)
+    fun makeApiCall(q: String?) {
+        val retrofitInstance = RetrofitInstance.getRetrofit()
+        retrofitInstance!!.getAllNews(q)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(getNewsListObserverRx())
     }
 
-    fun getNewsListObserverRx(): Observer<NewsResponse> {
+    private fun getNewsListObserverRx(): Observer<NewsResponse> {
         return object : Observer<NewsResponse> {
             override fun onSubscribe(d: Disposable) {
-                composite?.add(d)
             }
 
             override fun onNext(t: NewsResponse) {

@@ -12,16 +12,14 @@ class BindingAdapters {
     companion object {
         @JvmStatic
         @BindingAdapter("newsImage")
-        fun loadImage(view: ImageView, profileImage: String) {
-            if (!profileImage.isEmpty()) {
-                var requestOption = RequestOptions()
-                requestOption = requestOption.transforms(RoundedCorners(5))
-                profileImage?.apply {
-                    Glide.with(view.context)
-                        .load(this)
-                        .thumbnail(Glide.with(view.context).load(R.drawable.load))
-                        .apply(requestOption).into(view)
-                }
+        fun loadImage(view: ImageView, profileImage: String?) {
+            var requestOption = RequestOptions()
+            requestOption = requestOption.transforms(RoundedCorners(5))
+            profileImage?.let {
+                Glide.with(view.context)
+                    .load(profileImage)
+                    .thumbnail(Glide.with(view.context).load(R.drawable.load))
+                    .apply(requestOption).into(view)
             }
         }
     }

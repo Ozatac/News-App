@@ -7,18 +7,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.navigation.Navigation
 import com.tunahanozatac.appcentapp.R
 import com.tunahanozatac.appcentapp.data.model.Articles
 import com.tunahanozatac.appcentapp.data.model.NewsResponse
 import com.tunahanozatac.appcentapp.databinding.FragmentNewsBinding
 import com.tunahanozatac.appcentapp.ui.adapter.NewsAdapter
-import com.tunahanozatac.appcentapp.ui.view.NewsDetails.NewsDetailsFragmentArgs
 import com.tunahanozatac.appcentapp.ui.viewmodel.NewsViewModel
 
 
@@ -56,17 +54,26 @@ class NewsFragment : Fragment() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (s.isNullOrEmpty()) {
+                    loadData("Türkiye")
+                } else {
+                    loadData(s.toString())
+                }
+
 
             }
 
             override fun afterTextChanged(s: Editable?) {
-                loadData(s.toString())
+
             }
+        })
+
+        binding.searchButton2.setOnClickListener {
+            binding.searchText.setText("")
         }
-        )
     }
 
-    private fun subScbribe(){
+    private fun subScbribe() {
         viewModel.getListObserver().observe(viewLifecycleOwner, Observer<NewsResponse> {
             if (it != null) {
                 newsAdapter.updateList(it.articles as ArrayList<Articles>)

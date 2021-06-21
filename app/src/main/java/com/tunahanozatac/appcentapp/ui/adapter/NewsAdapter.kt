@@ -12,7 +12,7 @@ import com.tunahanozatac.appcentapp.databinding.RecyclerviewNewsrowBinding
 class NewsAdapter :
     RecyclerView.Adapter<NewsAdapter.ViewHolder>(), NewsClickListener {
 
-    private val newsList: ArrayList<Articles> = arrayListOf()
+    private var newsList: ArrayList<Articles> = arrayListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -44,7 +44,7 @@ class NewsAdapter :
 
     fun updateList(updateNewsList: ArrayList<Articles>) {
         newsList.clear()
-        newsList.addAll(updateNewsList)
+        newsList = updateNewsList
         notifyDataSetChanged()
     }
 
