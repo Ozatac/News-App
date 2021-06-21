@@ -1,4 +1,4 @@
-package com.tunahanozatac.appcentapp.ui.view.News
+package com.tunahanozatac.appcentapp.ui.view.news
 
 import android.os.Bundle
 import android.text.Editable
@@ -6,19 +6,15 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.tunahanozatac.appcentapp.R
 import com.tunahanozatac.appcentapp.data.model.Articles
-import com.tunahanozatac.appcentapp.data.model.NewsResponse
 import com.tunahanozatac.appcentapp.databinding.FragmentNewsBinding
 import com.tunahanozatac.appcentapp.ui.adapter.NewsAdapter
 import com.tunahanozatac.appcentapp.ui.viewmodel.NewsViewModel
-
 
 class NewsFragment : Fragment() {
 
@@ -42,6 +38,18 @@ class NewsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        if (binding.searchText.text.isEmpty()) {
+            binding.searchButton2.visibility = View.GONE
+        }
+        binding.searchButton2.setOnClickListener {
+            binding.searchText.setText("")
+        }
+
+        binding.searchButton2.setOnClickListener {
+            val action = NewsFragmentDirections.actionNavigationHomeToNewsDetailsFragment()
+            Navigation.findNavController(it).navigate(action)
+        }
         initRecyc()
         initSearchBox()
         subScbribe()
@@ -56,7 +64,9 @@ class NewsFragment : Fragment() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (s.isNullOrEmpty()) {
                     loadData("Türkiye")
+                    binding.searchButton2.visibility = View.GONE
                 } else {
+                    binding.searchButton2.visibility = View.VISIBLE
                     loadData(s.toString())
                 }
 
@@ -67,14 +77,10 @@ class NewsFragment : Fragment() {
 
             }
         })
-
-        binding.searchButton2.setOnClickListener {
-            binding.searchText.setText("")
-        }
     }
 
     private fun subScbribe() {
-        viewModel.getListObserver().observe(viewLifecycleOwner, Observer<NewsResponse> {
+        viewModel.getListObserver().observe(viewLifecycleOwner, {
             if (it != null) {
                 newsAdapter.updateList(it.articles as ArrayList<Articles>)
                 newsAdapter.notifyDataSetChanged()

@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.tunahanozatac.appcentapp.ui.view.News.NewsFragment"
+        android:name="com.tunahanozatac.appcentapp.ui.view.news.NewsFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_news" >
         <action
@@ -17,12 +17,12 @@
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="com.tunahanozatac.appcentapp.ui.view.Favorite.FavoriteFragment"
+        android:name="com.tunahanozatac.appcentapp.ui.view.favorite.FavoriteFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_favorite" />
     <fragment
         android:id="@+id/newsDetailsFragment"
-        android:name="com.tunahanozatac.appcentapp.ui.view.NewsDetails.NewsDetailsFragment"
+        android:name="com.tunahanozatac.appcentapp.ui.view.newsdetails.NewsDetailsFragment"
         android:label="fragment_news_details"
         tools:layout="@layout/fragment_news_details" >
         <action

@@ -1,4 +1,4 @@
-package com.tunahanozatac.appcentapp.ui.view.Favorite
+package com.tunahanozatac.appcentapp.ui.view.favorite
 
 import android.os.Bundle
 import android.view.LayoutInflater
