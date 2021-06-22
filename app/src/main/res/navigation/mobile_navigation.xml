@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/navigation_home"
         android:name="com.tunahanozatac.appcentapp.ui.view.news.NewsFragment"
-        android:label="@string/title_home"
+        android:label="@string/appcent_newsapp"
         tools:layout="@layout/fragment_news">
         <action
             android:id="@+id/action_navigation_home_to_newsDetailsFragment"
@@ -20,10 +20,11 @@
         android:name="com.tunahanozatac.appcentapp.ui.view.favorite.FavoriteFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_favorite" />
+
     <fragment
         android:id="@+id/newsDetailsFragment"
         android:name="com.tunahanozatac.appcentapp.ui.view.newsdetails.NewsDetailsFragment"
-        android:label="fragment_news_details"
+        android:label=""
         tools:layout="@layout/fragment_news_details">
         <action
             android:id="@+id/action_newsDetailsFragment_to_navigation_home"
@@ -35,6 +36,7 @@
             android:id="@+id/action_newsDetailsFragment_to_newsSourceFragment"
             app:destination="@id/newsSourceFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/newsSourceFragment"
         android:name="com.tunahanozatac.appcentapp.ui.view.newssource.NewsSourceFragment"
