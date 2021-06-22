@@ -46,10 +46,6 @@ class NewsFragment : Fragment() {
             binding.searchText.setText("")
         }
 
-        binding.searchButton2.setOnClickListener {
-            val action = NewsFragmentDirections.actionNavigationHomeToNewsDetailsFragment()
-            Navigation.findNavController(it).navigate(action)
-        }
         initRecyc()
         initSearchBox()
         subScbribe()

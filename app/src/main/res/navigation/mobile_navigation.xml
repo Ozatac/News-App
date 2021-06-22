@@ -9,7 +9,7 @@
         android:id="@+id/navigation_home"
         android:name="com.tunahanozatac.appcentapp.ui.view.news.NewsFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_news" >
+        tools:layout="@layout/fragment_news">
         <action
             android:id="@+id/action_navigation_home_to_newsDetailsFragment"
             app:destination="@id/newsDetailsFragment" />
@@ -24,13 +24,25 @@
         android:id="@+id/newsDetailsFragment"
         android:name="com.tunahanozatac.appcentapp.ui.view.newsdetails.NewsDetailsFragment"
         android:label="fragment_news_details"
-        tools:layout="@layout/fragment_news_details" >
+        tools:layout="@layout/fragment_news_details">
         <action
             android:id="@+id/action_newsDetailsFragment_to_navigation_home"
             app:destination="@id/navigation_home" />
         <argument
-            android:name="newsUuid"
-            app:argType="integer"
-            android:defaultValue="0" />
+            android:name="model"
+            app:argType="com.tunahanozatac.appcentapp.data.model.Articles" />
+        <action
+            android:id="@+id/action_newsDetailsFragment_to_newsSourceFragment"
+            app:destination="@id/newsSourceFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/newsSourceFragment"
+        android:name="com.tunahanozatac.appcentapp.ui.view.newssource.NewsSourceFragment"
+        android:label="fragment_news_source"
+        tools:layout="@layout/fragment_news_source">
+        <argument
+            android:name="url"
+            android:defaultValue="url"
+            app:argType="string" />
     </fragment>
 </navigation>

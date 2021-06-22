@@ -88,4 +88,8 @@ dependencies {
 
     //Paging Adapter
     implementation "androidx.paging:paging-runtime-ktx:$paging_version"
+
+    //materialfavoritebutton
+    implementation 'com.github.ivbaranov:materialfavoritebutton:0.1.4'
+
 }

@@ -1,7 +1,5 @@
 package com.tunahanozatac.appcentapp.ui.adapter
 
-import android.view.View
-
-interface NewsClickListener {
-    fun onClick(v: View)
+interface NewsClickListener<T> {
+    fun onClick(t: T)
 }

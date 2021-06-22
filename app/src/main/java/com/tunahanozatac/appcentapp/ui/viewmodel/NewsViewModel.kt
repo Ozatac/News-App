@@ -2,12 +2,10 @@ package com.tunahanozatac.appcentapp.ui.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.tunahanozatac.appcentapp.data.api.IAServices
 import com.tunahanozatac.appcentapp.data.api.RetrofitInstance
 import com.tunahanozatac.appcentapp.data.model.NewsResponse
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
