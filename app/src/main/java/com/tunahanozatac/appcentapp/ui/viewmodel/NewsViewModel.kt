@@ -1,23 +1,26 @@
 package com.tunahanozatac.appcentapp.ui.viewmodel
 
+import android.app.Application
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import com.tunahanozatac.appcentapp.base.BaseViewModel
 import com.tunahanozatac.appcentapp.data.api.RetrofitInstance
-import com.tunahanozatac.appcentapp.data.model.NewsResponse
+import com.tunahanozatac.appcentapp.data.db.NewsDatabase
+import com.tunahanozatac.appcentapp.data.model.Articles
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.launch
 
-class NewsViewModel : ViewModel() {
+class NewsViewModel(application: Application) : BaseViewModel(application) {
 
-    var newsList: MutableLiveData<NewsResponse> = MutableLiveData()
+    var newsList: MutableLiveData<List<Articles>> = MutableLiveData()
 
     init {
         makeApiCall("Türkiye ");
     }
 
-    fun getListObserver(): MutableLiveData<NewsResponse> {
+    fun getListObserver(): MutableLiveData<List<Articles>> {
         return newsList
     }
 
@@ -29,13 +32,15 @@ class NewsViewModel : ViewModel() {
             .subscribe(getNewsListObserverRx())
     }
 
-    private fun getNewsListObserverRx(): Observer<NewsResponse> {
-        return object : Observer<NewsResponse> {
+    private fun getNewsListObserverRx(): Observer<List<Articles>> {
+        return object : Observer<List<Articles>> {
             override fun onSubscribe(d: Disposable) {
             }
 
-            override fun onNext(t: NewsResponse) {
+            override fun onNext(t: List<Articles>) {
                 newsList.value = t
+
+
             }
 
             override fun onError(e: Throwable) {
@@ -46,6 +51,24 @@ class NewsViewModel : ViewModel() {
 
             }
 
+        }
+    }
+
+    fun showList(showList: List<Articles>) {
+        newsList.value = showList
+    }
+
+    fun storeInSQLite(list: List<Articles>) {
+        launch {
+            val dao = NewsDatabase(getApplication()).newsDao()
+            dao.getDelete()
+            val lisLong = dao.insertAll(*list.toTypedArray())
+            var i = 0
+            while (i < list.size) {
+                list[i].id = lisLong[i].toInt()
+                i++
+            }
+            showList(list)
         }
     }
 }

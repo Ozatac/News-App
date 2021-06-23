@@ -6,7 +6,7 @@ import com.tunahanozatac.appcentapp.data.model.NewsResponse
 
 class NewsDetailsViewModel() : ViewModel() {
 
-    var newsDetailList: MutableLiveData<NewsResponse> = MutableLiveData()
+    //var newsDetailList: MutableLiveData<NewsResponse> = MutableLiveData()
 
 
 }
