@@ -1,26 +1,24 @@
 package com.tunahanozatac.appcentapp.ui.viewmodel
 
-import android.app.Application
 import androidx.lifecycle.MutableLiveData
-import com.tunahanozatac.appcentapp.base.BaseViewModel
+import androidx.lifecycle.ViewModel
 import com.tunahanozatac.appcentapp.data.api.RetrofitInstance
-import com.tunahanozatac.appcentapp.data.db.NewsDatabase
-import com.tunahanozatac.appcentapp.data.model.Articles
+import com.tunahanozatac.appcentapp.data.model.NewsResponse
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-import kotlinx.coroutines.launch
 
-class NewsViewModel(application: Application) : BaseViewModel(application) {
+class NewsViewModel : ViewModel() {
 
-    var newsList: MutableLiveData<List<Articles>> = MutableLiveData()
+    var newsList: MutableLiveData<NewsResponse> = MutableLiveData()
+    var loading: MutableLiveData<Boolean> = MutableLiveData()
 
     init {
         makeApiCall("Türkiye ");
     }
 
-    fun getListObserver(): MutableLiveData<List<Articles>> {
+    fun getListObserver(): MutableLiveData<NewsResponse> {
         return newsList
     }
 
@@ -32,43 +30,25 @@ class NewsViewModel(application: Application) : BaseViewModel(application) {
             .subscribe(getNewsListObserverRx())
     }
 
-    private fun getNewsListObserverRx(): Observer<List<Articles>> {
-        return object : Observer<List<Articles>> {
+    private fun getNewsListObserverRx(): Observer<NewsResponse> {
+        return object : Observer<NewsResponse> {
             override fun onSubscribe(d: Disposable) {
             }
 
-            override fun onNext(t: List<Articles>) {
+            override fun onNext(t: NewsResponse) {
                 newsList.value = t
-
-
+                loading.value = true
             }
 
             override fun onError(e: Throwable) {
                 newsList.value = null
+                loading.value = false
             }
 
             override fun onComplete() {
 
             }
 
-        }
-    }
-
-    fun showList(showList: List<Articles>) {
-        newsList.value = showList
-    }
-
-    fun storeInSQLite(list: List<Articles>) {
-        launch {
-            val dao = NewsDatabase(getApplication()).newsDao()
-            dao.getDelete()
-            val lisLong = dao.insertAll(*list.toTypedArray())
-            var i = 0
-            while (i < list.size) {
-                list[i].id = lisLong[i].toInt()
-                i++
-            }
-            showList(list)
         }
     }
 }

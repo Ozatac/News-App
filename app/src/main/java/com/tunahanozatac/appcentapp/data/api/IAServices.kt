@@ -1,6 +1,5 @@
 package com.tunahanozatac.appcentapp.data.api
 
-import com.tunahanozatac.appcentapp.data.model.Articles
 import com.tunahanozatac.appcentapp.data.model.NewsResponse
 import com.tunahanozatac.appcentapp.utils.ConstantParams.Companion.API_KEY
 import com.tunahanozatac.appcentapp.utils.ConstantParams.Companion.END_POINT
@@ -15,5 +14,5 @@ interface IAServices {
         @Query("q") q: String? = "Türkiye",
         @Query("page") page: Int = 1,
         @Query("apiKey") apiKey: String = API_KEY
-    ): Observable<List<Articles>>
+    ): Observable<NewsResponse>
 }

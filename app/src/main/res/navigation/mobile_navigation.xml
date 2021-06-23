@@ -12,14 +12,26 @@
         tools:layout="@layout/fragment_news">
         <action
             android:id="@+id/action_navigation_home_to_newsDetailsFragment"
-            app:destination="@id/newsDetailsFragment" />
+            app:destination="@id/newsDetailsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
     <fragment
         android:id="@+id/navigation_notifications"
         android:name="com.tunahanozatac.appcentapp.ui.view.favorite.FavoriteFragment"
         android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_favorite" />
+        tools:layout="@layout/fragment_favorite">
+        <action
+            android:id="@+id/action_navigation_notifications_to_newsDetailsFragment"
+            app:destination="@id/newsDetailsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
 
     <fragment
         android:id="@+id/newsDetailsFragment"
@@ -28,7 +40,11 @@
         tools:layout="@layout/fragment_news_details">
         <action
             android:id="@+id/action_newsDetailsFragment_to_navigation_home"
-            app:destination="@id/navigation_home" />
+            app:destination="@id/navigation_home"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
         <argument
             android:name="model"
             app:argType="com.tunahanozatac.appcentapp.data.model.Articles" />
@@ -40,11 +56,14 @@
     <fragment
         android:id="@+id/newsSourceFragment"
         android:name="com.tunahanozatac.appcentapp.ui.view.newssource.NewsSourceFragment"
-        android:label="fragment_news_source"
+        android:label="Haber Kaynağı"
         tools:layout="@layout/fragment_news_source">
         <argument
             android:name="url"
             android:defaultValue="url"
             app:argType="string" />
+        <action
+            android:id="@+id/action_newsSourceFragment_to_newsDetailsFragment"
+            app:destination="@id/newsDetailsFragment" />
     </fragment>
 </navigation>

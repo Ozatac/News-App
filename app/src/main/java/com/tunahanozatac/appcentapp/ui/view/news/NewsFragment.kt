@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.Navigation
 import com.tunahanozatac.appcentapp.R
 import com.tunahanozatac.appcentapp.data.model.Articles
 import com.tunahanozatac.appcentapp.databinding.FragmentNewsBinding
@@ -51,7 +50,7 @@ class NewsFragment : Fragment() {
         subScbribe()
     }
 
-    fun initSearchBox() {
+    private fun initSearchBox() {
         binding.searchText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
@@ -80,6 +79,16 @@ class NewsFragment : Fragment() {
             if (it != null) {
                 newsAdapter.updateList(it.articles as ArrayList<Articles>)
                 newsAdapter.notifyDataSetChanged()
+            }
+        })
+
+        viewModel.loading.observe(viewLifecycleOwner, {
+            it?.let {
+                if (it){
+                    binding.newsIsLoading.visibility = View.GONE
+                }else{
+                    binding.newsIsLoading.visibility = View.VISIBLE
+                }
             }
         })
     }
