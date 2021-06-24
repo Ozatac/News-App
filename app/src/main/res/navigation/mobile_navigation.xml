@@ -51,6 +51,9 @@
         <action
             android:id="@+id/action_newsDetailsFragment_to_newsSourceFragment"
             app:destination="@id/newsSourceFragment" />
+        <action
+            android:id="@+id/action_newsDetailsFragment_to_navigation_notifications"
+            app:destination="@id/navigation_notifications" />
     </fragment>
 
     <fragment

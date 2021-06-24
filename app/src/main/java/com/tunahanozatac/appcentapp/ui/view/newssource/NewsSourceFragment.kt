@@ -24,11 +24,12 @@ class NewsSourceFragment : Fragment() {
     ): View {
         dataBinding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_news_source, container, false)
+
         dataBinding.webView.apply {
             settings.javaScriptEnabled = true
             settings.domStorageEnabled = true
             webViewClient = WebViewClient()
-            loadUrl(args.url)
+                loadUrl(args.url)
         }
         return dataBinding.root
     }

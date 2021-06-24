@@ -9,17 +9,23 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.tunahanozatac.appcentapp.R
-import com.tunahanozatac.appcentapp.data.model.Articles
 import com.tunahanozatac.appcentapp.databinding.FragmentNewsBinding
 import com.tunahanozatac.appcentapp.ui.adapter.NewsAdapter
 import com.tunahanozatac.appcentapp.ui.viewmodel.NewsViewModel
+import kotlinx.coroutines.*
 
 class NewsFragment : Fragment() {
 
     private lateinit var binding: FragmentNewsBinding
     private lateinit var viewModel: NewsViewModel
-    lateinit var newsAdapter: NewsAdapter
+    private lateinit var newsAdapter: NewsAdapter
+    private lateinit var layoutManager: LinearLayoutManager
+    private val coroutineScope: CoroutineScope = CoroutineScope(Dispatchers.Main)
+    private var searchJob: Job? = null
+    var page = 1
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,9 +51,9 @@ class NewsFragment : Fragment() {
             binding.searchText.setText("")
         }
 
-        initRecyc()
+        initRecyclerView()
         initSearchBox()
-        subScbribe()
+        subSubscribe()
     }
 
     private fun initSearchBox() {
@@ -57,15 +63,20 @@ class NewsFragment : Fragment() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                page = 1
                 if (s.isNullOrEmpty()) {
-                    loadData("Türkiye")
+                    viewModel.searchValue.value = "Turkiye"
                     binding.searchButton2.visibility = View.GONE
                 } else {
-                    binding.searchButton2.visibility = View.VISIBLE
-                    loadData(s.toString())
+                    searchJob?.cancel()
+                    searchJob = coroutineScope.launch {
+                        s.let {
+                            delay(1000)
+                            binding.searchButton2.visibility = View.VISIBLE
+                            viewModel.searchValue.value = s.toString()
+                        }
+                    }
                 }
-
-
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -74,33 +85,41 @@ class NewsFragment : Fragment() {
         })
     }
 
-    private fun subScbribe() {
+    private fun subSubscribe() {
         viewModel.getListObserver().observe(viewLifecycleOwner, {
             if (it != null) {
-                newsAdapter.updateList(it.articles as ArrayList<Articles>)
-                newsAdapter.notifyDataSetChanged()
+                binding.newsIsLoading.visibility = View.GONE
+                newsAdapter.updateList(it.articles, page)
             }
         })
 
-        viewModel.loading.observe(viewLifecycleOwner, {
+        viewModel.searchValue.observe(viewLifecycleOwner, {
             it?.let {
-                if (it){
-                    binding.newsIsLoading.visibility = View.GONE
-                }else{
-                    binding.newsIsLoading.visibility = View.VISIBLE
-                }
+                loadData(it)
             }
         })
     }
 
     private fun loadData(q: String) {
-        viewModel.makeApiCall(q)
+        viewModel.makeApiCall(q, page)
     }
 
-    fun initRecyc() {
+    private fun initRecyclerView() {
+        layoutManager = LinearLayoutManager(context)
+        binding.newsRecycler.layoutManager = layoutManager
         binding.newsRecycler.apply {
             newsAdapter = NewsAdapter()
             adapter = newsAdapter
         }
+
+        binding.newsRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if (dy > 0 && !recyclerView.canScrollVertically(2)) {
+                    page++
+                    loadData(viewModel.searchValue.value.toString())
+                }
+                super.onScrolled(recyclerView, dx, dy)
+            }
+        })
     }
 }

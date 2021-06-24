@@ -9,47 +9,37 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
-class NewsViewModel : ViewModel() {
+class FavoriteViewModel : ViewModel() {
 
     private var newsList: MutableLiveData<NewsResponse> = MutableLiveData()
-    var loading: MutableLiveData<Boolean> = MutableLiveData()
-    var searchValue = MutableLiveData<String>()
 
-    init {
-        searchValue.value = "Türkiye"
-    }
-
-    fun makeApiCall(q: String, page: Int) {
+    fun makeTopApiCall(q: String) {
         val retrofitInstance = RetrofitInstance.getRetrofit()
-        retrofitInstance!!.getAllNews(q, page)
+        retrofitInstance!!.getAllTop(q)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(getNewsListObserverRx())
+            .subscribe(getTopListObserverRx())
     }
 
-    private fun getNewsListObserverRx(): Observer<NewsResponse> {
+    private fun getTopListObserverRx(): Observer<NewsResponse> {
         return object : Observer<NewsResponse> {
             override fun onSubscribe(d: Disposable) {
             }
 
             override fun onNext(t: NewsResponse) {
                 newsList.value = t
-                loading.value = true
             }
 
             override fun onError(e: Throwable) {
                 newsList.value = null
-                loading.value = false
             }
 
             override fun onComplete() {
-
             }
-
         }
     }
 
-    fun getListObserver(): MutableLiveData<NewsResponse> {
+    fun getTopListObserver(): MutableLiveData<NewsResponse> {
         return newsList
     }
 }

@@ -7,19 +7,19 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.tunahanozatac.appcentapp.R
 import com.tunahanozatac.appcentapp.data.model.Articles
-import com.tunahanozatac.appcentapp.databinding.RecyclerviewNewsrowBinding
-import com.tunahanozatac.appcentapp.ui.view.news.NewsFragmentDirections
+import com.tunahanozatac.appcentapp.databinding.RecyclerviewTopsrowBinding
+import com.tunahanozatac.appcentapp.ui.view.favorite.FavoriteFragmentDirections
 
-class NewsAdapter :
-    RecyclerView.Adapter<NewsAdapter.ViewHolder>() {
+class FavoriteAdapter :
+    RecyclerView.Adapter<FavoriteAdapter.ViewHolder>() {
 
-    private var newsList: ArrayList<Articles> = arrayListOf()
+    private var topList: ArrayList<Articles> = arrayListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val view = DataBindingUtil.inflate<RecyclerviewNewsrowBinding>(
+        val view = DataBindingUtil.inflate<RecyclerviewTopsrowBinding>(
             inflater,
-            R.layout.recyclerview_newsrow,
+            R.layout.recyclerview_topsrow,
             parent,
             false
         )
@@ -27,14 +27,14 @@ class NewsAdapter :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(newsList[position])
+        holder.bind(topList[position])
     }
 
     override fun getItemCount(): Int {
-        return newsList.size
+        return topList.size
     }
 
-    class ViewHolder(var binding: RecyclerviewNewsrowBinding) :
+    class ViewHolder(var binding: RecyclerviewTopsrowBinding) :
         RecyclerView.ViewHolder(binding.root), NewsClickListener<Articles> {
         fun bind(item: Articles) {
             binding.news = item
@@ -43,17 +43,14 @@ class NewsAdapter :
         }
 
         override fun onClick(t: Articles) {
-            val action = NewsFragmentDirections.actionNavigationHomeToNewsDetailsFragment(t)
+            val action =
+                FavoriteFragmentDirections.actionNavigationNotificationsToNewsDetailsFragment(t)
             Navigation.findNavController(binding.root).navigate(action)
         }
     }
 
-    fun updateList(updateNewsList: ArrayList<Articles>, isNew: Int) {
-        if (isNew == 1) {
-            newsList = updateNewsList
-        } else {
-            newsList.addAll(updateNewsList)
-        }
+    fun updateTopList(updateNewsList: ArrayList<Articles>) {
+        topList.addAll(updateNewsList)
         notifyDataSetChanged()
     }
 }
