@@ -1,4 +1,4 @@
-# Appcent-Task
+# News-App
 # News App 
 News application using the API from https://newsapi.org/
 API News Is JSON API for live news and blog articles from the media.
